@@ -45,14 +45,6 @@
 </script>
 
 <template>
-  <div>
-    <v-alert
-      v-model="alert"
-      :type="tipoAlert"
-      closable
-    >{{ textoAlert }}</v-alert>
-  </div>
-
   <v-data-table
     :headers="headers"
     :items="compras"
@@ -62,6 +54,33 @@
       <v-toolbar flat>
         <v-toolbar-title>Compras</v-toolbar-title>
       </v-toolbar>
+    </template>
+    <template v-slot:item.fecha="{ item }">
+      <span>{{ new Date(item.fecha).toLocaleDateString() }}</span>
+    </template>
+
+    <template v-slot:item.ingreso="{ item }">
+      <span v-if="item.ingreso > 0 || item.ingreso != null">
+        {{ '$' + item.ingreso }}
+      </span>
+    </template>
+
+    <template v-slot:item.gasto="{ item }">
+      <span v-if="item.gasto > 0 || item.gasto != null">
+        {{ '$' + item.gasto }}
+      </span>
+    </template>
+
+    <template v-slot:item.descuento="{ item }">
+      <span v-if="item.descuento > 0 || item.descuento != null">
+        {{ item.descuento + '%' }}
+      </span>
+    </template>
+
+    <template v-slot:item.precio_regular="{ item }">
+      <span v-if="item.precio_regular > 0 || item.precio_regular != null">
+        {{ '$' + item.precio_regular }}
+      </span>
     </template>
   </v-data-table>
 </template>

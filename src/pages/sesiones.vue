@@ -8,11 +8,6 @@ export default{
       sesiones: {},
       headers: [
         {
-          title: 'Sesión No.',
-          align: 'start',
-          key: 'idsesion'
-        },
-        {
           title: 'Juego',
           align: 'start',
           key: 'juego'
@@ -45,11 +40,15 @@ export default{
         this.tipoAlert = 'error'
         this.alert = true;
       })
+    },
+    initialize(){
+      this.cargaTablaSesiones();
     }
   },
   computed: {
 
-  }
+  },
+  created(){this.initialize()}
 };
 </script>
 

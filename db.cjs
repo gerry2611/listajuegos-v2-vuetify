@@ -240,6 +240,144 @@ app.get("/api/movimiento", (req, res) => {
     })
 })
 
+app.get("/api/juego_completado", (req, res) => {
+    let query = 'SELECT * FROM juegos_completado;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la tabla juegos_completado"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        }
+        )
+    })    
+})
+
+app.get("/api/cuentas_online", (req, res) => {
+    let query = 'SELECT * FROM cuentas_online;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la tabla juegos_completado"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        }
+        )
+    })      
+})
+
+app.get("/api/est_juegosxconsola", (req, res) => {
+    let query = 'SELECT * FROM EST_juegosxConsola;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista EST_juegosxConsola"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
+app.get("/api/est_juegosxplataforma", (req, res) => {
+    let query = 'SELECT * FROM EST_juegosxPlataforma;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista EST_juegosxPlataforma"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
+app.get("/api/juego_en_sesion", (req, res) => {
+    let query = 'SELECT * FROM juego_en_sesion;'
+
+        connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista juego_en_sesion"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
+app.get("/api/ultimas_10_sesiones", (req, res) => {
+    let query = 'SELECT * FROM ultimas_10_sesiones;'
+
+        connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista ultimas_10_sesiones"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
+app.get("/api/sesion_total", (req, res) => {
+    let query = 'SELECT * FROM sesion_total;'
+
+        connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista sesion_total"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })    
+})
+
+app.get("/api/juegos_recientes", (req, res) => {
+    let query = 'SELECT * FROM juegos_recientes;'
+
+        connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la vista sesion_total"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })       
+})
+
 app.post("/api/juego_nuevo", (req, res) => {
     console.log("Registrando juego...");
     let nombre = req.body.nombre;
@@ -278,6 +416,7 @@ app.post("/api/juego_nuevo", (req, res) => {
         res.json(200, {
             msg: "Juego nuevo agregado exitosamente a la base de datos",
         })
+        console.log("Juego nuevo agregado exitosamente a la base de datos");
         
     })
 });
@@ -365,6 +504,8 @@ app.post("/api/editar_juego", (req, res) => {
         res.json(200, {
             msg: "Se ha editado el juego " + idjuego + "con éxito",
         })
+
+        console.log("Se ha editado el juego " + idjuego + "con éxito");
         
     })
 });
@@ -425,10 +566,13 @@ app.post("/api/inicio_sesion", (req, res) => {
         res.json(200, {
             msg: "Sesión iniciada",
         })        
+
+        console.log("Sesión iniciada");
     })
 });
 
 app.post("/api/fin_sesion", (req, res) => {
+    console.log("Finalizando sesión...");
     let id = req.body.id;
     let juego = req.body.juego;
 
@@ -445,6 +589,8 @@ app.post("/api/fin_sesion", (req, res) => {
         res.json(200, {
             msg: "Sesión finalizada"
         })
+
+        console.log("Sesión finalizada");
     })
 });
 
@@ -480,7 +626,7 @@ app.post("/api/registrar_compra", (req, res) => {
     let query = `CALL juego_comprado(${idjuego},"${fecha}",${fechahoy},"${nombre}",${consola},"${tienda}","${tipo}",${precio},"${nota}");`
 
     if(precio_oferta === 1){
-        query = `CALL juego_comprado_oferta(${idjuego}, "${fecha}","${nombre}",${consola},"${tienda}","${tipo}",${precio}, ${descuento}, ${precio_regular}, "${nota}");` 
+        query = `CALL juego_comprado_oferta(${idjuego}, "${fecha}",${fechahoy},"${nombre}",${consola},"${tienda}","${tipo}",${precio}, ${descuento}, ${precio_regular}, "${nota}");` 
     }
 
     if(compratienda){
@@ -685,12 +831,44 @@ app.post("/api/editar_consola", (req, res) => {
     })
 })
 
+app.post("/api/debito_cuentas", (req, res) => {
+    let cuenta = req.body.cuenta;
+    let monto = req.body.monto;
+    let fechahoy = req.body.fechahoy;
+    let fecha_anterior = req.body.fecha_anterior;
+    let query = `CALL registro_compra_debito("${cuenta}", '${monto}');`
+    if(fechahoy){
+        query = `CALL registro_compras_debito_fecha('${fecha_anterior}' ,"${cuenta}", '${monto}');`
+    }
+
+        connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al registrar el ingreso"
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Ingreso exitoso"
+        })
+    })
+})
+
 const connection = mysql.createConnection({
     host: "localhost",
     user: "gerry",
     password: "sou12sag",
     database: "listado_juegos"
 });
+
+// Uso exclusivo para las pruebas de las nuevas funciones
+/* const connection = mysql.createConnection({
+    host: "localhost",
+    user: 'gerry',
+    password: 'sou12sag',
+    database: 'demo_db'
+}) */
 
 connection.connect((err) => {
     if (err) throw err;

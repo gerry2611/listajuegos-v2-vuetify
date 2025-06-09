@@ -15,7 +15,7 @@ export default {
           sortable: false,
           key: 'nombre',
         },
-        { title: 'ID', key: 'idplataforma'},
+        { title: 'Logo', align: 'center', sortable: false, key: 'img'},
         { title: '# de juegos', key: 'nojuegos'},
         { title: 'Descripción', key: 'descripcion'},
         { title: 'Acciones', key: 'actions', sortable: false},
@@ -143,6 +143,15 @@ export default {
         </v-card>
       </v-dialog>
     </v-toolbar>
+  </template>
+  <template v-slot:item.img="{ item }">
+    <v-card class="my-2" elevation="2" rounded>
+      <v-img
+        :src="`src/assets/${item.img}`"
+        height="64"
+        color="white"
+      ></v-img>
+    </v-card>
   </template>
   <template v-slot:item.actions="{ item }">
     <v-icon

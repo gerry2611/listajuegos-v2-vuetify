@@ -1,3 +1,5 @@
+<!-- eslint-disable no-undef -->
+<!-- eslint-disable no-unused-vars -->
 <template>
   <v-footer
     height="40"
@@ -37,6 +39,8 @@
 </template>
 
 <script setup>
+
+/* eslint-disable */
   const items = [
     {
       title: 'Vuetify Documentation',

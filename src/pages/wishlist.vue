@@ -217,9 +217,12 @@ export default{
           axios.post("/api/registrar_compra", {
             idjuego: this.editedItem.id,
             fecha: this.editedItem.fecha_comprado,
+            fecha_hoy: this.fechaHoy,
             nombre: this.editedItem.nombre,
             consola: this.editedItem.idconsola,
             tienda: this.editedItem.tienda,
+            compratienda: this.tiendaCheck,
+            tipo: this.editedItem.tipo,
             precio: this.editedItem.precio_oferta,
             precio_oferta: this.oferta,
             descuento: this.editedItem.descuento,

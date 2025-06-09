@@ -72,6 +72,7 @@ export default {
     textoAlertSesion: "",
     tipoAlertSesion: '',
     enSesion: false,
+    buscarJuego: "",
     }
   },
   mounted(){
@@ -195,6 +196,7 @@ export default {
               this.textoAlertSesion = "Sesión iniciada"
               this.tipoAlertSesion = 'success'
               this.enSesion = true
+              juegosesion = [this.editedItem.nombre, this.editedItem.consola, this.editedItem.plataforma]
             }).catch(() => {
               this.alertSesion = true
               this.textoAlertSesion = "Error al iniciar sesión, intente de nuevo"
@@ -212,6 +214,7 @@ export default {
               this.textoAlertSesion = "Ha finalizado la sesión"
               this.tipoAlertSesion = 'success'
               this.enSesion = false
+              juegosesion = []
             }).catch(() => {
               this.alertSesion = true
               this.textoAlertSesion = "Error al finalizar la sesión, revise la base de datos e intente de nuevo"
@@ -259,11 +262,24 @@ export default {
 <v-data-table
 :headers="headers"
 :items="juegos"
+:filter-keys="['nombre']"
+:search="buscarJuego"
 :sort-by="[{ key: 'idjuegos', order: 'asc' }]">
   <template v-slot:top>
     <v-toolbar flat>
       <v-toolbar-title>Juegos</v-toolbar-title>
       <v-divider class="mx-4" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="buscarJuego"
+        density="compact"
+        label="Buscar Juego..."
+        prepend-inner-icon="mdi-magnify"
+        variant="solo-filled"
+        flat
+        hide-details
+        single-line
+      ></v-text-field>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" min-width="1000px" max-width="1540px">
         <template v-slot:activator="{ props }">
@@ -381,19 +397,17 @@ export default {
       <v-dialog
         v-model="dialogSesion" max-width="500px"
       >
-        <v-card>
-          <v-card-title class="text-h5">Sesión para {{ editedItem.nombre }}</v-card-title>
-          <v-row>
-            <div>
-              <v-alert
-                v-model="alertSesion"
-                :type="tipoAlertSesion"
-                closable>{{ textoAlertSesion }}</v-alert>
-            </div>
+        <v-card :title="'Sesión para ' + editedItem.nombre">
+          <v-alert
+            v-model="alertSesion"
+            :type="tipoAlertSesion"
+            closable
+          >{{ textoAlertSesion }}</v-alert>
+          <v-card-text>
             <v-label v-if="enSesion">
-              En Sesión
+                <v-card-text>En Sesión</v-card-text>
             </v-label>
-          </v-row>
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green-darken-1" variant="text" @click="inicioSesion">Inicio</v-btn>
@@ -404,6 +418,18 @@ export default {
         </v-card>
     </v-dialog>
     </v-toolbar>
+  </template>
+
+  <template v-slot:item.estado="{ item }">
+    <div class="text-end">
+      <v-chip
+        :color="item.estado === 'Activo' ? 'green' : 'red'"
+        :text="item.estado === 'Activo' ? 'Activo' : item.estado"
+        class="text-uppercase"
+        size="small"
+        label
+      ></v-chip>
+    </div>
   </template>
 
   <template v-slot:item.actions="{ item }">
