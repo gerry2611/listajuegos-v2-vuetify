@@ -17,6 +17,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     dialogSesion: false,
+    dialogDB: false,
     headers: [
       {
         title: 'Nombre',
@@ -73,6 +74,8 @@ export default {
     tipoAlertSesion: '',
     enSesion: false,
     buscarJuego: "",
+    juegoDB: "",
+    opcionDB: ""
     }
   },
   mounted(){
@@ -137,6 +140,13 @@ export default {
             this.editedIndex = -1
           })
         },
+        closeSesionDB(){
+          this.dialogDB = false
+          this.$nextTick(() => {
+            this.editedItem = {...this.defaultItem}
+            this.editedIndex = -1
+          })
+        },
         save(){
           if(this.editedIndex > -1){
             axios.post("/api/editar_juego", {
@@ -196,7 +206,6 @@ export default {
               this.textoAlertSesion = "Sesión iniciada"
               this.tipoAlertSesion = 'success'
               this.enSesion = true
-              juegosesion = [this.editedItem.nombre, this.editedItem.consola, this.editedItem.plataforma]
             }).catch(() => {
               this.alertSesion = true
               this.textoAlertSesion = "Error al iniciar sesión, intente de nuevo"
@@ -214,7 +223,53 @@ export default {
               this.textoAlertSesion = "Ha finalizado la sesión"
               this.tipoAlertSesion = 'success'
               this.enSesion = false
-              juegosesion = []
+            }).catch(() => {
+              this.alertSesion = true
+              this.textoAlertSesion = "Error al finalizar la sesión, revise la base de datos e intente de nuevo"
+              this.tipoAlertSesion = 'error'
+            })
+          }
+        },
+        inicioSesionDB(){
+          if(this.editedItem.nombre != ""){
+            if(this.editedItem.idjuegos === 0){
+              this.opcionDB = "Demo"
+            }else{
+              this.opcionDB = "Beta"
+            }
+            axios.post("/api/inicio_sesion", {
+              id: this.editedItem.idjuegos,
+              juego: this.opcionDB,
+              idconsola: this.editedItem.idconsola,
+              idplataforma: this.editedItem.idplataforma,
+              demo: this.editedItem.nombre
+            }).then((res) => {
+              this.alertSesion = true
+              this.textoAlertSesion = "Sesión iniciada"
+              this.tipoAlertSesion = 'success'
+              this.enSesion = true
+            }).catch(() => {
+              this.alertSesion = true
+              this.textoAlertSesion = "Error al iniciar sesión, intente de nuevo"
+              this.tipoAlertSesion = 'error'
+            })
+          }
+        },
+        finSesionDB(){
+          if(this.editedItem.nombre != ""){
+            if(this.editedItem.idjuegos === 0){
+              this.opcionDB = "Demo"
+            }else{
+              this.opcionDB = "Beta"
+            }
+            axios.post("/api/fin_sesion", {
+              id: this.editedItem.idjuegos,
+              juego: this.opcionDB
+            }).then((res) => {
+              this.alertSesion = true
+              this.textoAlertSesion = "Ha finalizado la sesión"
+              this.tipoAlertSesion = 'success'
+              this.enSesion = false
             }).catch(() => {
               this.alertSesion = true
               this.textoAlertSesion = "Error al finalizar la sesión, revise la base de datos e intente de nuevo"
@@ -246,6 +301,9 @@ export default {
     },
     dialogSesion(val){
       val || this.close()
+    },
+    dialogDB(val){
+      val || this.close()
     }
   },
   created(){this.initialize()}
@@ -253,7 +311,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div style="align-items: center;">
     <v-alert
     v-model="alert"
     :type="tipoAlert"
@@ -416,6 +474,72 @@ export default {
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogDB"
+      max-width="500px"
+      max-height="500px"
+    >
+    <template v-slot:activator="{ props }">
+      <v-btn class="mb-2" color="primary" dark v-bind="props">Prueba</v-btn>
+    </template>
+      <v-card title="Sesión de pruebas">
+                  <v-alert
+            v-model="alertSesion"
+            :type="tipoAlertSesion"
+            closable
+          >{{ textoAlertSesion }}</v-alert>
+        <v-card-text>
+          <v-container>
+              <v-row v-if="!enSesion">
+                <v-col cols="12" md="4" sm="6">
+                  <v-radio-group inline label="Tipo" v-model="editedItem.idjuegos">
+                    <v-radio label="Demo" :value="0"></v-radio>
+                    <v-radio label="Beta" :value="-1"></v-radio>
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+              <v-row v-if="!enSesion">
+                <v-col cols="12" md="4" sm="6">
+                  <v-text-field v-model="editedItem.nombre"
+                  label="Nombre"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row v-if="!enSesion">
+                <v-col cols="12" md="4" sm="6">
+                  <v-select
+                  v-model="editedItem.idconsola"
+                  :items="consolas"
+                  item-title="nombre"
+                  item-value="idconsola"
+                  label="Consola"
+                  single-line
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-select
+                    v-model="editedItem.idplataforma"
+                    :items="plataformas"
+                    item-title="nombre"
+                    item-value="idplataforma"
+                    label="Plataforma"
+                    single-line
+                  ></v-select>
+                </v-col>
+              </v-row>
+          </v-container>
+            <v-label v-if="enSesion">
+                <v-card-text>En Sesión</v-card-text>
+            </v-label>
+        </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green-darken-1" variant="text" @click="inicioSesionDB">Inicio</v-btn>
+            <v-btn color="red-darken-1" variant="text" @click="finSesionDB">Fin</v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="closeSesionDB">Cerrar</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+      </v-card>
     </v-dialog>
     </v-toolbar>
   </template>

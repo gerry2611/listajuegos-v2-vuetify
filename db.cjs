@@ -547,9 +547,11 @@ app.post("/api/inicio_sesion", (req, res) => {
     let juego = req.body.juego;
     let idconsola = req.body.idconsola;
     let idplataforma = req.body.idplataforma;
-    let demo = req.body.demo;
+    let demo
 
-    if(juego != "Demo"){
+    if(juego === 'Demo'|| juego === 'Beta'){
+        demo = req.body.demo;
+    }else{
         demo = ""
     }
 
@@ -558,7 +560,7 @@ app.post("/api/inicio_sesion", (req, res) => {
     connection.query(query, (err, result) => {
         if(err){
             res.json(500, {
-                msg: "Error al iniciar la sesión"
+                msg: "Error al iniciar la sesión - " + err
             })
             return
         }
@@ -581,7 +583,7 @@ app.post("/api/fin_sesion", (req, res) => {
     connection.query(query, (err, result) => {
         if(err){
             res.json(500, {
-                msg: "Error al finalizar la sesión."
+                msg: "Error al finalizar la sesión. - " + err
             })
             return
         }
@@ -855,20 +857,20 @@ app.post("/api/debito_cuentas", (req, res) => {
     })
 })
 
-const connection = mysql.createConnection({
+/* const connection = mysql.createConnection({
     host: "localhost",
     user: "gerry",
     password: "sou12sag",
     database: "listado_juegos"
-});
+}); */
 
 // Uso exclusivo para las pruebas de las nuevas funciones
-/* const connection = mysql.createConnection({
+const connection = mysql.createConnection({
     host: "localhost",
     user: 'gerry',
     password: 'sou12sag',
     database: 'demo_db'
-}) */
+})
 
 connection.connect((err) => {
     if (err) throw err;

@@ -76,7 +76,8 @@ export default{
       reservaCheck: false,
       tiendaCheck: false,
       fechaHoy: false,
-      tienda_fisica: ''
+      tienda_fisica: '',
+      tiendas: ['Físico', 'Nintendo eShop', 'Playstation Store', 'Steam', 'Epic Games Store', 'Battle.net', 'App Store', 'Mac App Store', 'Google Play', 'Amazon']
     }
   },
   mounted(){
@@ -423,7 +424,7 @@ export default{
                     <v-select
                       label="Tiendas"
                       v-model="editedItem.tienda"
-                      :items="['Nintendo eShop', 'Playstation Store', 'Steam', 'Epic Games Store', 'App Store', 'Mac App Store', 'Físico']"
+                      :items="tiendas"
                       :hint="`${editedItem.tienda}`"
                       persistent-hint
                     ></v-select>
@@ -670,7 +671,7 @@ export default{
                     <v-select
                       label="Tiendas"
                       v-model="editedItem.tienda"
-                      :items="['Nintendo eShop', 'Playstation Store', 'Steam', 'Epic Games Store', 'App Store', 'Mac App Store']"
+                      :items="tiendas"
                       :hint="`${editedItem.tienda}`"
                       persistent-hint
                       :disabled="tiendaCheck"
@@ -784,6 +785,16 @@ export default{
       </v-dialog>
         </v-toolbar>
 
+      </template>
+      <template v-slot:item.precio="{item}">
+        <span v-if="item.precio > 0 || item.precio != null">
+          {{ '$' + item.precio }}
+        </span>
+      </template>
+      <template v-slot:item.precio_tienda="{item}">
+        <span v-if="item.precio_tienda > 0 || item.precio_tienda != null">
+          {{ '$' + item.precio_tienda }}
+        </span>
       </template>
       <template v-slot:item.actions="{item}">
           <v-icon

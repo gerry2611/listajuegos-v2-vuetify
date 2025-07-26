@@ -89,23 +89,23 @@ export default{
       this.saldoItem = {...item}
       this.dialogSaldo = true
       if(this.saldoItem.cuenta === "Nintendo eShop"){
-        this.saldoCuentaElegida = eshop;
+        this.saldoCuentaElegida = [10, 20, 35, 50];
       }else if(this.saldoItem.cuenta === "Playstation Store"){
-        this.saldoCuentaElegida = ps;
+        this.saldoCuentaElegida = [10, 25, 50, 75, 100];
       }else if(this.saldoItem.cuenta === "Steam"){
-        this.saldoCuentaElegida = steam;
+        this.saldoCuentaElegida = [5, 10, 20, 50, 75, 100];
       }else if(this.saldoItem.cuenta === "Epic Games Store"){
-        this.saldoCuentaElegida = epic;
+        this.saldoCuentaElegida = [5, 10, 20, 50, 100];
       }else if(this.saldoItem.cuenta === "EA Play"){
-        this.saldoCuentaElegida = ea;
+        this.saldoCuentaElegida = [15, 25];
       }else if(this.saldoItem.cuenta === "Battle.net"){
-        this.saldoCuentaElegida = battle_net;
+        this.saldoCuentaElegida = [5, 10, 25, 50, "cualquier valor"];
       }else if(this.saldoItem.cuenta === "iTunes"){
-        this.saldoCuentaElegida = itunes;
+        this.saldoCuentaElegida = [10, 15, 25, 30, 50, 70, 100, 150, 200, 250, 300, 400, 500];
       }else if(this.saldoItem.cuenta === "Google Play"){
-        this.saldoCuentaElegida = google_play;
+        this.saldoCuentaElegida = [10, 15, 20, 25, 50, 100];
       }else if(this.saldoItem.cuenta === "Amazon"){
-        this.saldoCuentaElegida = amazon;
+        this.saldoCuentaElegida = [5, 10, 15, 20, 25, 50, 100, 300, 500];
       }
     },
     agregarSaldo(){

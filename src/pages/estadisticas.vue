@@ -100,7 +100,7 @@ export default{
     ></v-tab>
   </v-tabs>
 
-  <v-tabs-window v-model="tab">
+  <v-tabs-window v-model="tab" style="align-items: center; position: absolute; margin-top: 10%; margin-left: 20%;">
     <v-tabs-window-item value="Juegos por Consola">
       <div id="app" style="position:relative;">
         <PlotlyChart :data="datos" :layout="chartLayout" />
