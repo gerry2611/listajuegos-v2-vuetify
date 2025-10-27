@@ -77,7 +77,8 @@ export default{
       tiendaCheck: false,
       fechaHoy: false,
       tienda_fisica: '',
-      tiendas: ['Físico', 'Nintendo eShop', 'Playstation Store', 'Steam', 'Epic Games Store', 'Battle.net', 'App Store', 'Mac App Store', 'Google Play', 'Amazon']
+      tiendas: ['Físico', 'Nintendo eShop', 'Playstation Store', 'Steam', 'Epic Games Store', 'Battle.net', 'App Store', 'Mac App Store', 'Google Play', 'Amazon'],
+      buscarJuego: ""
     }
   },
   mounted(){
@@ -370,6 +371,8 @@ export default{
     <v-data-table
     :headers="headers"
     :items="juegos"
+    :filter-keys="['nombre']"
+    :search="buscarJuego"
     :sort-by="[{ key: 'id', order: 'asc' }]"
     >
       <template v-slot:top>
@@ -377,7 +380,18 @@ export default{
           <v-toolbar-title>Wishlist</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" min-width="1000px" max-width="1540px">
+        <v-text-field
+        v-model="buscarJuego"
+        density="compact"
+        label="Buscar Juego..."
+        prepend-inner-icon="mdi-magnify"
+        variant="solo-filled"
+        flat
+        hide-details
+        single-line
+        ></v-text-field>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" width="unset">
           <template v-slot:activator="{ props }">
             <v-btn class="mb-2" color="primary" dark v-bind="props">Nuevo</v-btn>
           </template>
@@ -388,7 +402,7 @@ export default{
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-text-field v-model="editedItem.nombre"
                     label="Nombre"
                     :rules="[() => !!editedItem.nombre || 'Campo requerido']"
@@ -397,7 +411,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-radio-group inline label="Tipo" v-model="editedItem.tipo">
                       <v-radio label="Juego" value="Juego"></v-radio>
                       <v-radio label="Complemento" value="Complemento"></v-radio>
@@ -408,7 +422,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                     v-model="editedItem.idconsola"
                     :items="consolas"
@@ -420,7 +434,7 @@ export default{
                     single-line
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                       label="Tiendas"
                       v-model="editedItem.tienda"
@@ -431,14 +445,14 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="date"
                       v-model="editedItem.fecha_lan_edit"
                       label="Fecha de Lanzamiento"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="number"
                       v-model="editedItem.precio"
@@ -448,7 +462,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-textarea label="Nota" v-model="editedItem.nota"></v-textarea>
                   </v-col>
                 </v-row>
@@ -471,14 +485,14 @@ export default{
           </v-card>
         </v-dialog>
         <v-dialog
-          v-model="dialogOtro" min-width="1000px" max-width="1540px"
+          v-model="dialogOtro" width="unset"
         >
         <v-card>
           <v-card-title class="text-h5">Registro de la compra/reserva</v-card-title>
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-text-field v-model="editedItem.nombre"
                     label="Nombre"
                     :rules="[() => !!editedItem.nombre || 'Campo requerido']"
@@ -487,7 +501,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-radio-group inline label="Tipo" v-model="editedItem.tipo">
                       <v-radio label="Juego" value="Juego"></v-radio>
                       <v-radio label="Complemento" value="Complemento"></v-radio>
@@ -498,7 +512,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                     v-model="editedItem.idconsola"
                     :items="consolas"
@@ -510,7 +524,7 @@ export default{
                     single-line
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                       label="Tiendas"
                       v-model="editedItem.tienda"
@@ -526,14 +540,14 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="date"
                       v-model="editedItem.fecha_lan_edit"
                       label="Fecha de Lanzamiento"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="number"
                       v-model="editedItem.precio"
@@ -543,12 +557,12 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-textarea label="Nota" v-model="editedItem.nota"></v-textarea>
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-checkbox
                       v-model="compraCheck"
                       label="Compra"
@@ -626,7 +640,7 @@ export default{
             </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="dialogRegistro" min-width="1000px" max-width="1540px">
+      <v-dialog v-model="dialogRegistro" width="unset">
         <template v-slot:activator="{ props }">
             <v-btn class="mb-2" color="primary" dark v-bind="props">Registro</v-btn>
         </template>
@@ -635,7 +649,7 @@ export default{
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-text-field v-model="editedItem.nombre"
                     label="Nombre"
                     :rules="[() => !!editedItem.nombre || 'Campo requerido']"
@@ -644,7 +658,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="12" sm="6">
                     <v-radio-group inline label="Tipo" v-model="editedItem.tipo">
                       <v-radio label="Juego" value="Juego"></v-radio>
                       <v-radio label="Complemento" value="Complemento"></v-radio>
@@ -655,7 +669,7 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                     v-model="editedItem.idconsola"
                     :items="consolas"
@@ -667,7 +681,7 @@ export default{
                     single-line
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-select
                       label="Tiendas"
                       v-model="editedItem.tienda"
@@ -683,14 +697,14 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="date"
                       v-model="editedItem.fecha_lan_edit"
                       label="Fecha de Lanzamiento"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       type="number"
                       v-model="editedItem.precio"
@@ -700,12 +714,12 @@ export default{
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-textarea label="Nota" v-model="editedItem.nota"></v-textarea>
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="4" sm="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-checkbox
                       v-model="compraCheck"
                       label="Compra"

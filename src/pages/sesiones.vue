@@ -60,7 +60,7 @@ export default{
   <v-data-table
     :headers="headers"
     :items="sesiones"
-    :sort-by="[{ key: 'idsesion', order: 'asc' }]"
+    :sort-by="[{ key: 'idsesion', order: 'desc' }]"
   >
     <template v-slot:top>
       <v-toolbar flat>

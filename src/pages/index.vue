@@ -9,8 +9,8 @@
   />
 
   <div
-    class="d-lg-none ga-3"
-    style="position: absolute; top: 40%; right: 50%;"
+    class="d-lg-none ga-3 align-content-center"
+    style="position: absolute; top: 40%; right: 20%; left: 20%;"
   >
     <v-btn
       text="Juegos"

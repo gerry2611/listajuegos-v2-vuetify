@@ -339,7 +339,7 @@ export default {
         single-line
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" min-width="1000px" max-width="1540px">
+      <v-dialog v-model="dialog" width="unset">
         <template v-slot:activator="{ props }">
           <v-btn class="mb-2" color="primary" dark v-bind="props">Nuevo</v-btn>
         </template>
@@ -350,13 +350,13 @@ export default {
           <v-card-text>
             <v-container>
               <v-row>
-              <v-col cols="12" md="4" sm="6">
+              <v-col cols="12" md="12" sm="6">
                 <v-text-field v-model="editedItem.nombre"
                 label="Nombre"></v-text-field>
               </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-select
                   v-model="editedItem.idconsola"
                   :items="consolas"
@@ -368,7 +368,7 @@ export default {
                   single-line
                   ></v-select>
                 </v-col>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-select
                     v-model="editedItem.idplataforma"
                     :items="plataformas"
@@ -382,7 +382,7 @@ export default {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="12" sm="6">
                   <v-text-field
                     type="date"
                     v-model="editedItem.fecha_adquirido_edit"
@@ -391,7 +391,7 @@ export default {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="12" sm="6">
                   <v-radio-group inline label="Estado" v-model="editedItem.estado">
                     <v-radio label="Activo" value="Activo" color="success"></v-radio>
                     <v-radio label="En pausa" value="En pausa" color="warning"></v-radio>
@@ -401,7 +401,7 @@ export default {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-checkbox
                     v-if="editedItem > -1"
                     v-model="siCompletado"
@@ -413,7 +413,7 @@ export default {
                     label="Completado"
                   ></v-checkbox>
                 </v-col>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-text-field
                     v-if="editedIndex > -1"
                     type="date"
@@ -431,7 +431,7 @@ export default {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="12" sm="6">
                   <v-textarea label="Nota" v-model="editedItem.nota"></v-textarea>
                 </v-col>
               </v-row>
@@ -453,7 +453,7 @@ export default {
         </v-card>
       </v-dialog>
       <v-dialog
-        v-model="dialogSesion" max-width="500px"
+        v-model="dialogSesion" width="unset"
       >
         <v-card :title="'Sesión para ' + editedItem.nombre">
           <v-alert
@@ -477,8 +477,8 @@ export default {
     </v-dialog>
     <v-dialog
       v-model="dialogDB"
-      max-width="500px"
-      max-height="500px"
+      max-width="1000px"
+      max-height="1000px"
     >
     <template v-slot:activator="{ props }">
       <v-btn class="mb-2" color="primary" dark v-bind="props">Prueba</v-btn>
